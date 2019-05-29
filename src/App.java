@@ -103,21 +103,18 @@ public class App {
 			vetor_visitou[casteloAtual] = false;
 		}
 		
-		
-		private static boolean verificaCasteloDisponivel(Castelo c1, Castelo c2) {
-		
-			int novoExercito = ((c1.getExercito_restante()-50) - (c2.getTamanho_exercito() * 2));
-			int proximoAtaque = novoExercito - 50; 
 
-			if (proximoAtaque > 0) { 
-				c2.setExercito_restante(novoExercito);
-				return true; 
-			}
-			return false;
-		}
-	
-		
+    private static boolean verificaCasteloDisponivel(Castelo c1, Castelo c2) {
 
+        int novoExercito = ((c1.getExercito_restante() - 50) - (c2.getTamanho_exercito() * 2));
+        int proximoAtaque = novoExercito - 50;
+
+        if (proximoAtaque > 0) {
+            c2.setExercito_restante(novoExercito);
+            return true;
+        }
+        return false;
+    }
 
 
 }

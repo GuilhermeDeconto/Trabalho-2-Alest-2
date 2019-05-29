@@ -1,12 +1,14 @@
 
 import java.io.BufferedReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class App {
 
-	 private boolean[] marked;
-	 private int[] edgeTo;
-	 private int[] distTo;
 	 private static int count;
 	 private static int qtd_vizinhos = 0;
 	 private static int num_entradas = 0; 
@@ -16,12 +18,29 @@ public class App {
 		String[] data;
 		int tam_castelo_principal = 0;
 		int count = 0;
+		int num_arquivo = 0;
+		Scanner in = new Scanner(System.in);
 		
+		String[] files = new String[] { "caso30.txt", "caso32.txt", "caso34.txt", "caso36.txt", "caso38.txt",
+				"caso40.txt", "caso42.txt", "caso44.txt", "caso46.txt", "caso48.txt", "caso50.txt", "caso60.txt" };
 		
+	
+		System.out.println("Escolha qual caso de teste executar: ");
+		for(int i =0; i < files.length-1;i++) {
+			System.out.println(i +" - "+files[i]);
+		}
+		int escolha = in.nextInt();
+		if (escolha >= 0 && escolha <=10) {
+			num_arquivo = escolha;
+		}
 		
 		lista = new ArrayList<>();
-		  try {
-	            BufferedReader reader = new BufferedReader(new java.io.FileReader("D:\\workspace\\Alest2Trab2\\caso44.txt"));
+		 
+		
+		// Leitura e inicialização dos castelos
+		try {
+			  	Path path1 = Paths.get("res/"+files[num_arquivo]);
+	            BufferedReader reader = new BufferedReader(Files.newBufferedReader(path1, Charset.forName("utf8")));
 	           
 	            
 	            String line = reader.readLine();
@@ -54,44 +73,34 @@ public class App {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-		  
-		  
-//		  for(Castelo c: lista) {
-//			  System.out.println("Castelo: " + c.getNumero_castelo() + ", exercito: " + c.getTamanho_exercito());
-//			System.out.print("Caminhos: ");
-//			  for(Castelo caminho: c.getCastelosProximos()) {
-//					System.out.print(caminho.getNumero_castelo() + " ");
-//				}
-//			  System.out.println("");
-//		  }
 		
 		  
-		  System.out.println("QUI Castelos conquistados: "+ avancaExercito());
+		  System.out.println("Castelos conquistados: "+ avancaExercito());
 		  
 	}
 	
 	
 	
 		public static int avancaExercito() {
-			boolean[] vetor_visitou = new boolean[qtd_vizinhos]; //um vetor de boolean para auxiliar as passadas entre os filhos dos castelos
-			avancaExercito(vetor_visitou, 0, count); //passa-se o vetor com os passos, 0 por ser o castelo do siberio, count por ser a variavel onde ficara o resultado
+			boolean[] vetor_visitou = new boolean[qtd_vizinhos];
+			avancaExercito(vetor_visitou, 0, count); 
 			return count;
 		}
 
 		private static void avancaExercito(boolean[] vetor_visitou, int casteloAtual,  int terrasInvadidas) {
-			vetor_visitou[casteloAtual] = true; //todo castelo que entrar ja fica marcado como passado
-			for (Castelo c : lista.get(casteloAtual).getCastelosProximos()) { //for each para todos os adjacentes do castelo atual
-				int castleTarget = c.getNumero_castelo(); //pega identificador do castelo adjacentes de cada iteracao
-				if (!vetor_visitou[castleTarget] && verificaCasteloDisponivel(lista.get(casteloAtual), c)) { //verifica se o castelo nao foi visitado e se tem exercito para conquistar
-					avancaExercito(vetor_visitou, castleTarget, terrasInvadidas + 1); //caso tenha, executa o metodo recursivo novamente 
+			vetor_visitou[casteloAtual] = true; 
+			for (Castelo c : lista.get(casteloAtual).getCastelosProximos()) {
+				int castleTarget = c.getNumero_castelo(); 
+				if (!vetor_visitou[castleTarget] && verificaCasteloDisponivel(lista.get(casteloAtual), c)) { 
+					avancaExercito(vetor_visitou, castleTarget, terrasInvadidas + 1);  
 				}
 			}
-			//sempre que sair da iteracao ele verifica se precisa atualizar o contador global
+			
 			if(terrasInvadidas > count){
 				count = terrasInvadidas;
 			}
 			
-			vetor_visitou[casteloAtual] = false; //define falso o para o castelo que ja foi utilizado e nao vai mais ser neste laco
+			vetor_visitou[casteloAtual] = false;
 		}
 		
 		

@@ -28,8 +28,11 @@ public class App {
             System.out.println(i + " - " + files[i]);
         }
         int escolha = in.nextInt();
-        if (escolha >= 0 && escolha <= 15) {
+        if (escolha >= 0 && escolha <= 11) {
             num_arquivo = escolha;
+        }else{
+            System.out.println("Arquivo escolhido inexistente, por favor tente novamente");
+            return ;
         }
         long startTime = System.currentTimeMillis();
         lista = new ArrayList<>();
@@ -64,7 +67,7 @@ public class App {
         System.out.println("Castelos conquistados: " + avancaExercito());
         long endTime = System.currentTimeMillis();
         long end = endTime - startTime;
-        System.out.println("Tempo de execução da aplicação: " + end);
+        System.out.println("Tempo de execução da aplicação em milissegundos: " + end);
     }
 
     public static int avancaExercito() {
